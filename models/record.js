@@ -2,10 +2,6 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const recordSchema = new Schema({
-  id: {
-    type: Number,
-    required: true
-  },
   name: {
     type: String,
     required: true
@@ -19,7 +15,13 @@ const recordSchema = new Schema({
     type: Number,
     required: true
   },
-  // 待補 userId 及 categoryId
+  categoryId: {
+    type: Number,
+    ref: 'Category',
+    index: true,
+    required: true
+  }
+  // 待補 userId
 })
 
 module.exports = mongoose.model('Record', recordSchema)
