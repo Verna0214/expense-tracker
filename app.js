@@ -20,12 +20,12 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-// Set Handlebar
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+// Set Handlebars
+app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
 app.get('/', (req, res) => {
-  res.send('This is my expense-tracker app.')
+  res.render('index')
 })
 
 app.listen(port, () => {
