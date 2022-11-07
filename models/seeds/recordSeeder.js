@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-const SEED_RECORD = [
+const recordDada = [
   {
     name: '午餐',
     date: '2019/04/23',
@@ -44,7 +44,7 @@ db.on('error', () => {
   console.log('mongoose error!')
 })
 db.once('open', () => {
-  Record.create(SEED_RECORD)
+  Record.create(recordDada)
     .then(() => {
       console.log('done!')
     })
