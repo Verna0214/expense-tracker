@@ -46,6 +46,9 @@ app.engine('hbs', exphbs.engine({
     },
     dateFormat(date) {
       return `${date.getFullYear()}-` + `${`0${date.getMonth() + 1}`.slice(-2)}-` + `${`0${date.getDate()}`.slice(-2)}`
+    },
+    ifEqual(a, b, options) {
+      return a === b ? options.fn(this) : options.inverse(this)
     }
   }
 }))
@@ -93,6 +96,31 @@ app.get('/records/new', (req, res) => {
 // create router
 app.post('/records', (req, res) => {
   Record.create(req.body)
+    .then(() => res.redirect('/'))
+    .catch(err => console.log(err))
+})
+
+// edit page router
+app.get('/records/:id/edit', (req, res) => {
+  const _id = req.params.id
+  return Record.findOne({ _id })
+    .lean()
+    .then(record => res.render('edit', { record }))
+    .catch(err => console.log(err))
+})
+
+// edit router
+app.put('/records/:id', (req, res) => {
+  const _id = req.params.id
+  const { name, date, amount, categoryId } = req.body
+  return Record.findOne({ _id })
+    .then(record => {
+      record.name = name
+      record.date = date
+      record.amount = amount
+      record.categoryId = categoryId
+      return record.save()
+    })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
