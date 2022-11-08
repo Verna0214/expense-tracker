@@ -53,11 +53,13 @@
 
             {{!-- Edit button --}}
             <a href="./records/{{ this._id }}/edit">
-            <button class="btn btn-outline-warning">Edit</button>
+              <button class="btn btn-outline-warning">Edit</button>
             </a>
 
             {{!-- Delete button --}}
-            <button class="btn btn-outline-danger">Delete</button>
+            <form action="./records/{{ this._id }}?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-outline-danger">Delete</button>
+            </form>
 
           </li>
           {{/each}}
