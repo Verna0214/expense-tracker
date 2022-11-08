@@ -64,6 +64,11 @@ app.get('/', (req, res) => {
     .catch(err => console.log(err))
 })
 
+// create router
+app.get('/expense/new', (req, res) => {
+  return res.render('new')
+})
+
 app.listen(port, () => {
   console.log(`App is running on http://localhost:${port}`)
 })
