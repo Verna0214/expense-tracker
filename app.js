@@ -1,5 +1,6 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
+const methodOverride = require('method-override')
 const mongoose = require('mongoose')
 const Record = require('./models/record')
 const Category = require('./models/category')
@@ -48,6 +49,8 @@ app.engine('hbs', exphbs.engine({
   }
 }))
 app.set('view engine', 'hbs')
+
+app.use(methodOverride('_method'))
 
 // index router
 app.get('/', (req, res) => {
