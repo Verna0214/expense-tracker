@@ -26,7 +26,7 @@ db.once('open', () => {
 })
 
 // Set Handlebars
-app.engine('hbs', exphbs.engine({ 
+app.engine('hbs', exphbs.engine({
   defaultLayout: 'main',
   extname: '.hbs',
   helpers: {
@@ -57,6 +57,22 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // index router
 app.get('/', (req, res) => {
   Record.find()
+    .lean()
+    .sort({ date: 'desc' })
+    .then(records => {
+      let totalAmount = 0
+      for (let i = 0; i < records.length; i++) {
+        totalAmount += records[i].amount
+      }
+      res.render('index', { records, totalAmount })
+    })
+    .catch(err => console.log(err))
+})
+
+// category select
+app.post('/category', (req, res) => {
+  const categoryId = req.body.category
+  Record.find({ categoryId })
     .lean()
     .sort({ date: 'desc' })
     .then(records => {
