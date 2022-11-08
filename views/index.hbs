@@ -1,7 +1,71 @@
-<ul>
-  {{#each records}}
-  <li>
-    {{this.name}}
-  </li>
-  {{/each}}
-</ul>
+<div class="container">
+  {{!-- 篩選類別選單 --}}
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+      <form action="/category" method="POST">
+        <select class="form-select my-4" name="category" id="category" onchange="this.form.submit()">
+          <option disabled selected>類別</option>
+          <option value="1">家居物業</option>
+          <option value="2">交通出行</option>
+          <option value="3">休閒娛樂</option>
+          <option value="4">餐飲食品</option>
+          <option value="5">其他</option>
+        </select>
+      </form>
+    </div>
+  </div>
+
+  {{!-- Total amount --}}
+  <div class="row justify-content-evenly my-2">
+    <div class="col-md-3 text-center">
+      <p style="font-size: 28px; color: rgb(0, 0, 114);">總金額：</p>
+    </div>
+    <div class="col-md-3">
+      <strong style="font-size: 55px; color: orange;">{{ totalAmount }}</strong>
+    </div>
+  </div>
+
+  {{!-- Record 資料列表 --}}
+  <div class="row my-2">
+    <div class="col-md-8 m-auto bg-light bg-opacity-75 rounded">
+      <div class="mb-2 rounded border">
+        <ul class="list-group list-group-flush">
+          {{#each records}}
+          <li
+            class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between">
+
+            {{!-- Handlebars helpers Icon --}}
+            <div>
+              <i class="category_icon fa-solid {{ categoryIcon this.categoryId }} f5-5 fa-2x"
+                style="color: rgb(0, 225, 255)"></i>
+            </div>
+
+            {{!-- Name & Date --}}
+            <div class="w-25 d-flex flex-column text-start">
+              <h5>{{ this.name }}</h5>
+              <span>
+                <small class="date text-muted">{{ dateFormat this.date }}</small>
+              </span>
+            </div>
+
+            {{!-- amount per record --}}
+            <p class="fs-4 text-end">{{ this.amount }}元</p>
+
+            {{!-- Edit button --}}
+            <button class="btn btn-outline-warning">Edit</button>
+
+            {{!-- Delete button --}}
+            <button class="btn btn-outline-danger">Delete</button>
+
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Create button --}}
+  <div class="col-md-12 my-4 text-center">
+    <button class="btn btn-outline-primary" style="width: 200px;">Create</button>
+  </div>
+</div>
