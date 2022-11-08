@@ -1,6 +1,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const Record = require('./models/record')
 const Category = require('./models/category')
@@ -51,6 +52,7 @@ app.engine('hbs', exphbs.engine({
 app.set('view engine', 'hbs')
 
 app.use(methodOverride('_method'))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // index router
 app.get('/', (req, res) => {
@@ -67,9 +69,16 @@ app.get('/', (req, res) => {
     .catch(err => console.log(err))
 })
 
-// create router
-app.get('/expense/new', (req, res) => {
+// create page router
+app.get('/records/new', (req, res) => {
   return res.render('new')
+})
+
+// create router
+app.post('/records', (req, res) => {
+  Record.create(req.body)
+    .then(() => res.redirect('/'))
+    .catch(err => console.log(err))
 })
 
 app.listen(port, () => {
