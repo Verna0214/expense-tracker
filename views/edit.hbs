@@ -39,9 +39,28 @@
     </div>
 
     <div class="d-flex justify-content-evenly">
-      <button type="submit" class="btn btn-outline-warning">Save</button>
+      <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#edit-modal">Save</button>
       <a href="/"><button type="button" class="btn btn-outline-danger">Back</button></a>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="edit-title" style="color: red; font-weight: 600;">Warning</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" style="color: rgb(0, 0, 168); font-weight: 300;">
+            Please reconfirm your edits.
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-outline-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </form>
 </div>
+
