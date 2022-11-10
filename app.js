@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const Record = require('./models/record')
 const Category = require('./models/category')
 const User = require('./models/user')
+const routes = require('./routes')
 
 // 僅在非正式環境時，使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -57,82 +58,7 @@ app.set('view engine', 'hbs')
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// index router
-app.get('/', (req, res) => {
-  Record.find()
-    .lean()
-    .sort({ date: 'desc' })
-    .then(records => {
-      let totalAmount = 0
-      for (let i = 0; i < records.length; i++) {
-        totalAmount += records[i].amount
-      }
-      res.render('index', { records, totalAmount })
-    })
-    .catch(err => console.log(err))
-})
-
-// category select
-app.post('/category', (req, res) => {
-  const categoryId = req.body.category
-  Record.find({ categoryId })
-    .lean()
-    .sort({ date: 'desc' })
-    .then(records => {
-      let totalAmount = 0
-      for (let i = 0; i < records.length; i++) {
-        totalAmount += records[i].amount
-      }
-      res.render('index', { records, totalAmount })
-    })
-    .catch(err => console.log(err))
-})
-
-// create page router
-app.get('/records/new', (req, res) => {
-  return res.render('new')
-})
-
-// create router
-app.post('/records', (req, res) => {
-  Record.create(req.body)
-    .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
-})
-
-// edit page router
-app.get('/records/:id/edit', (req, res) => {
-  const _id = req.params.id
-  return Record.findOne({ _id })
-    .lean()
-    .then(record => res.render('edit', { record }))
-    .catch(err => console.log(err))
-})
-
-// edit router
-app.put('/records/:id', (req, res) => {
-  const _id = req.params.id
-  const { name, date, amount, categoryId } = req.body
-  return Record.findOne({ _id })
-    .then(record => {
-      record.name = name
-      record.date = date
-      record.amount = amount
-      record.categoryId = categoryId
-      return record.save()
-    })
-    .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
-})
-
-// delete router
-app.delete('/records/:id', (req, res) => {
-  const _id = req.params.id
-  Record.findOne({ _id })
-    .then(record => record.remove())
-    .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
-})
+app.use(routes)
 
 app.listen(port, () => {
   console.log(`App is running on http://localhost:${port}`)
