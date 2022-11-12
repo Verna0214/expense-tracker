@@ -4,7 +4,8 @@ const Record = require('../../models/record')
 
 // index router
 router.get('/', (req, res) => {
-  Record.find()
+  const userId = req.user._id
+  Record.find({ userId })
     .lean()
     .sort({ date: 'desc' })
     .then(records => {
@@ -19,8 +20,9 @@ router.get('/', (req, res) => {
 
 // category select router
 router.post('/category', (req, res) => {
+  const userId = req.user._id
   const categoryId = req.body.category
-  Record.find({ categoryId })
+  Record.find({ categoryId, userId })
     .lean()
     .sort({ date: 'desc' })
     .then(records => {
