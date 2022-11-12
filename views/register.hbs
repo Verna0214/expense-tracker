@@ -3,6 +3,9 @@
     <div class="card card-body">
       <span style="color: red;">*為必填欄位</span>
       <h1 class="text-center mt-3" style="color: #FF8800;">Register</h1>
+
+      {{> message}}
+
       <form action="/users/register" method="POST">
         <div class="mb-3">
           <label for="name" class="mb-2">Name<span style="color: red;">*</span></label>
