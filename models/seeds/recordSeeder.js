@@ -1,5 +1,22 @@
+const bcrypt = require('bcryptjs')
 const Record = require('../record')
+const User = require('../user')
 const db = require('../../config/mongoose')
+
+const SEED_USER = [
+  {
+    name: '廣志',
+    email: 'user1@example.com',
+    password: '12345678',
+    index: [0, 1, 2, 4]
+  },
+  {
+    name: '小新',
+    email: 'user2@example.com',
+    password: '12345678',
+    index: [3]
+  }
+]
 
 const recordDada = [
   {
@@ -35,9 +52,32 @@ const recordDada = [
 ]
 
 db.once('open', () => {
-  Record.create(recordDada)
-    .then(() => {
-      console.log('done!')
-    })
-    .catch(error => console.log('error!'))
+  Promise.all(
+    SEED_USER.map(user => {
+      const { name, email, password, index } = user
+      bcrypt
+        .genSalt(10)
+        .then(salt => bcrypt.hash(password, salt))
+        .then(hash => User.create({
+          name,
+          email,
+          password: hash
+        }))
+        .then((user) => {
+          const userId = user._id
+          const records = index.map(index => {
+            const record = ({ ...recordDada[index], userId })
+            return record
+          })
+          return new Promise(() => {
+            Record.create(records)
+            console.log('done!')
+          })
+        })
+        .then(() => {
+          console.log('Exit!')
+          process.exit()
+        })
+        .catch(err => console.log(err))
+    }))
 })
