@@ -15,7 +15,10 @@ router.get('/', (req, res) => {
       }
       res.render('index', { records, totalAmount })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error', { errorMsg: err.message })
+    })
 })
 
 // category select router
@@ -32,7 +35,10 @@ router.post('/category', (req, res) => {
       }
       res.render('index', { records, totalAmount })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error', { errorMsg: err.message })
+    })
 })
 
 module.exports = router

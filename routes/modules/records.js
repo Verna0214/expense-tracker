@@ -13,7 +13,10 @@ router.post('/', (req, res) => {
   req.body.userId = userId
   Record.create(req.body)
     .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error', { errorMsg: err.message })
+    })
 })
 
 // edit page router
@@ -23,7 +26,10 @@ router.get('/:id/edit', (req, res) => {
   return Record.findOne({ _id, userId })
     .lean()
     .then(record => res.render('edit', { record }))
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error', { errorMsg: err.message })
+    })
 })
 
 // edit router
@@ -40,7 +46,10 @@ router.put('/:id', (req, res) => {
       return record.save()
     })
     .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error', { errorMsg: err.message })
+    })
 })
 
 // delete router
@@ -50,7 +59,10 @@ router.delete('/:id', (req, res) => {
   Record.findOne({ _id, userId })
     .then(record => record.remove())
     .then(() => res.redirect('/'))
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+      res.render('error', { errorMsg: err.message })
+    })
 })
 
 module.exports = router
