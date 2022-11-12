@@ -4,6 +4,7 @@ const exphbs = require('express-handlebars')
 const methodOverride = require('method-override')
 const bodyParser = require('body-parser')
 const routes = require('./routes')
+const usePassport = require('./config/passport')
 
 // 僅在非正式環境時，使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -53,6 +54,8 @@ app.use(session({
 
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: true }))
+
+usePassport(app)
 
 app.use(routes)
 
