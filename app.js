@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const app = express()
-const port = 3000
+const port = process.env.PORT
 
 // Set mongoose
 require('./config/mongoose')
@@ -48,7 +48,7 @@ app.engine('hbs', exphbs.engine({
 app.set('view engine', 'hbs')
 
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
